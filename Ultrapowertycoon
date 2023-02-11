@@ -80,18 +80,8 @@ credits.TextScaled = true
 credits.TextSize = 14.000
 credits.TextWrapped = true
 
-auto_claim_cash.Name = "auto_claim_cash"
-auto_claim_cash.Parent = master
-auto_claim_cash.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-auto_claim_cash.BorderColor3 = Color3.fromRGB(0, 0, 0)
-auto_claim_cash.Position = UDim2.new(0.0216606501, 0, 0.144742593, 0)
-auto_claim_cash.Size = UDim2.new(0, 97, 0, 31)
-auto_claim_cash.Font = Enum.Font.SourceSans
-auto_claim_cash.Text = "Auto claim cash"
-auto_claim_cash.TextColor3 = Color3.fromRGB(0, 0, 0)
-auto_claim_cash.TextScaled = true
-auto_claim_cash.TextSize = 14.000
-auto_claim_cash.TextWrapped = true
+
+
 
 auto_upgrade.Name = "auto_upgrade"
 auto_upgrade.Parent = master
