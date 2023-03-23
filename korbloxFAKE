@@ -1,9 +1,9 @@
 -- hats https://www.roblox.com/catalog?Category=1&CreatorName=DuckXander&CreatorType=Group&salesTypeFilter=1
 -- 
 
-loadstring(game:HttpGet("1",true))()-- original script, js to lazy to do all the shit
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zaizax983/YouTube-THE-ZAIZAX/main/korblox1",true))()-- original script, js to lazy to do all the shit
 
 game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function() -- remove all of this if you dont want it to execute again after death
 task.wait(0.1)
-    loadstring(game:HttpGet('https://pastebin.com/raw/EXT7czgx'))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/zaizax983/YouTube-THE-ZAIZAX/main/korblox1
 end)
