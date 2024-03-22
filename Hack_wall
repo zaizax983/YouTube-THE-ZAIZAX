@@ -2,8 +2,8 @@ while true do
   task.wait( )
 local args = {
     [1] = "Combat",
-    [2] = Vector3.new(132.67413330078125, 7.369705677032471, -689.0361938476562),
-    [3] = 2
+    [2] = Vector3.new(132.4727325439453, 7.369705677032471, -688.4544067382812),
+    [3] = 1
 }
 
 game:GetService("Players").LocalPlayer:WaitForChild("RemoteEvent"):FireServer(unpack(args))
