@@ -57,7 +57,7 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 for _, pos in ipairs(positions) do
     humanoidRootPart.CFrame = CFrame.new(pos)
-    wait(0.2)  -- รอ 0.1 วินาทีระหว่างการเคลื่อนที่ไปยังตำแหน่งถัดไป
+    wait(0.1)  -- รอ 0.1 วินาทีระหว่างการเคลื่อนที่ไปยังตำแหน่งถัดไป
 end
 
 local positions2 = {
@@ -109,5 +109,5 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 for _, pos in ipairs(positions2) do
     humanoidRootPart.CFrame = CFrame.new(pos)
-    wait(0.2)  -- รอ 0.1 วินาทีระหว่างการเคลื่อนที่ไปยังตำแหน่งถัดไป
+    wait(0.1)  -- รอ 0.1 วินาทีระหว่างการเคลื่อนที่ไปยังตำแหน่งถัดไป
 end
