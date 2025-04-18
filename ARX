@@ -1,0 +1,140 @@
+local player = game.Players.LocalPlayer
+
+-- สร้าง GUI และตั้งค่าให้อยู่บนสุด
+local gui = Instance.new("ScreenGui")
+gui.Name = "WorldControlGui"
+gui.DisplayOrder = 9999
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- สร้าง ScrollingFrame สำหรับ UI หลัก
+local scrollingFrame = Instance.new("ScrollingFrame", gui)
+scrollingFrame.Size = UDim2.new(0, 220, 0, 300)
+scrollingFrame.Position = UDim2.new(0, 10, 0, 40)
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+scrollingFrame.ScrollBarThickness = 8
+scrollingFrame.BackgroundTransparency = 0.3
+scrollingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+scrollingFrame.Visible = true
+scrollingFrame.Name = "MainPanel"
+scrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scrollingFrame.ClipsDescendants = true
+
+-- จัดเรียงปุ่มด้วย UIListLayout
+local layout = Instance.new("UIListLayout", scrollingFrame)
+layout.Padding = UDim.new(0, 5)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- ฟังก์ชันสร้างปุ่ม
+local function createButton(text)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, -10, 0, 40)
+    button.Text = text
+    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 20
+    button.Parent = scrollingFrame
+    return button
+end
+
+-- รายชื่อโลก
+local worlds = {"OnePiece", "Namek", "DemonSlayer", "Naruto", "OPM"}
+
+for _, world in ipairs(worlds) do
+    local button = createButton("ไปโลก " .. world)
+    button.MouseButton1Click:Connect(function()
+        game:GetService("ReplicatedStorage").Remote.Server.PlayRoom.Event:FireServer("Create")
+        task.wait(0.3)
+        game:GetService("ReplicatedStorage").Remote.Server.PlayRoom.Event:FireServer("Change-Mode", {Mode = "Ranger Stage"})
+        task.wait(0.3)
+        game:GetService("ReplicatedStorage").Remote.Server.PlayRoom.Event:FireServer("Change-World", {World = world})
+        task.wait(0.3)
+        game:GetService("ReplicatedStorage").Remote.Server.PlayRoom.Event:FireServer("Submit")
+        task.wait(0.3)
+        game:GetService("ReplicatedStorage").Remote.Server.PlayRoom.Event:FireServer("Start")
+    end)
+end
+
+-- ปุ่มออโต้ลูป
+local autoLoopEnabled = false
+local autoLoopButton = createButton("ออโต้ลูป: ปิด")
+autoLoopButton.MouseButton1Click:Connect(function()
+    autoLoopEnabled = not autoLoopEnabled
+    autoLoopButton.Text = "ออโต้ลูป: " .. (autoLoopEnabled and "เปิด" or "ปิด")
+    if autoLoopEnabled then
+        task.spawn(function()
+            while autoLoopEnabled do
+                task.wait(1)
+                game:GetService("ReplicatedStorage").Remote.Server.OnGame.Voting.VoteRetry:FireServer()
+            end
+        end)
+    end
+end)
+
+-- ปุ่มออโต้เน็กซ์
+local autoNextEnabled = false
+local autoNextButton = createButton("ออโต้เน็กซ์: ปิด")
+autoNextButton.MouseButton1Click:Connect(function()
+    autoNextEnabled = not autoNextEnabled
+    autoNextButton.Text = "ออโต้เน็กซ์: " .. (autoNextEnabled and "เปิด" or "ปิด")
+    if autoNextEnabled then
+        task.spawn(function()
+            while autoNextEnabled do
+                task.wait(1)
+                game:GetService("ReplicatedStorage").Remote.Server.OnGame.Voting.VoteNext:FireServer()
+            end
+        end)
+    end
+end)
+
+-- ปุ่ม Toggle เปิด/ปิด UI
+local toggleButton = Instance.new("TextButton", gui)
+toggleButton.Size = UDim2.new(0, 100, 0, 30)
+toggleButton.Position = UDim2.new(0, 10, 0, 5)
+toggleButton.Text = "BASHUB"
+toggleButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+toggleButton.TextColor3 = Color3.new(1, 1, 1)
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.TextSize = 18
+
+toggleButton.MouseButton1Click:Connect(function()
+    scrollingFrame.Visible = not scrollingFrame.Visible
+end)
+
+-- ระบบลากปุ่ม Toggle ได้
+local UserInputService = game:GetService("UserInputService")
+local dragging, dragInput, dragStart, startPos
+
+local function update(input)
+	local delta = input.Position - dragStart
+	toggleButton.Position = UDim2.new(
+		0, startPos.X.Offset + delta.X,
+		0, startPos.Y.Offset + delta.Y
+	)
+end
+
+toggleButton.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = toggleButton.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+toggleButton.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)
