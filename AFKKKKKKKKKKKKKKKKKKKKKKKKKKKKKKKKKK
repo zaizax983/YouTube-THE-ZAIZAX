@@ -1,0 +1,41 @@
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/Proxylol/OtherScripts/main/AntiAfk.lua'),true))()
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+local renderDistance = 10
+
+while true do
+	task.wait(1)
+
+	for _, part in ipairs(workspace:GetDescendants()) do
+		if part:IsA("BasePart") and part:IsDescendantOf(workspace) and part.Transparency < 1 then
+			local distance = (part.Position - humanoidRootPart.Position).Magnitude
+			if distance > renderDistance then
+				part.LocalTransparencyModifier = 1
+			else
+				part.LocalTransparencyModifier = 0
+			end
+		end
+	end
+end
+
+-- สร้าง ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "LoveHEEGui"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true -- ไม่ให้โดน UI ด้านบนบัง
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- สร้าง TextLabel
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(0.5, 0, 0.2, 0)
+textLabel.Position = UDim2.new(0.25, 0, 0.4, 0)
+textLabel.BackgroundTransparency = 1 -- พื้นหลังโปร่งใส
+textLabel.BorderSizePixel = 0
+textLabel.Text = "BasLoveHEE"
+textLabel.TextColor3 = Color3.fromRGB(255, 0, 255) -- สีชมพู
+textLabel.TextScaled = true
+textLabel.Font = Enum.Font.GothamBold
+textLabel.Parent = screenGui
