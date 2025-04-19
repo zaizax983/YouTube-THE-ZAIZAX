@@ -1,13 +1,9 @@
-loadstring(game:HttpGet(('https://raw.githubusercontent.com/Proxylol/OtherScripts/main/AntiAfk.lua'),true))()
-
--- LocalScript (เช่น อยู่ใน StarterPlayerScripts)
+-- Add anti-AFK and attack loop script
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local attackEvent = ReplicatedStorage:WaitForChild("AttackEvent") -- สมมุติ RemoteEvent ชื่อ AttackEvent
+local autoAttackEnabled = false
 
-while true do
-    attackEvent:FireServer() -- ส่งคำสั่งไปเซิร์ฟเวอร์เหมือนคลิกโจมตี
-    wait(0.8) -- ความเร็วในการคลิก (ทุก 0.1 วิ)
-end
+-- LocalScript (เช่น อยู่ใน StarterPlayerScripts)
 local player = game.Players.LocalPlayer
 
 -- สร้าง GUI และตั้งค่าให้อยู่บนสุด
@@ -93,6 +89,21 @@ autoNextButton.MouseButton1Click:Connect(function()
             while autoNextEnabled do
                 task.wait(1)
                 game:GetService("ReplicatedStorage").Remote.Server.OnGame.Voting.VoteNext:FireServer()
+            end
+        end)
+    end
+end)
+
+-- Add Auto Attack Toggle Button
+local autoAttackButton = createButton("ออโต้โจมตี: ปิด")
+autoAttackButton.MouseButton1Click:Connect(function()
+    autoAttackEnabled = not autoAttackEnabled
+    autoAttackButton.Text = "ออโต้โจมตี: " .. (autoAttackEnabled and "เปิด" or "ปิด")
+    if autoAttackEnabled then
+        task.spawn(function()
+            while autoAttackEnabled do
+                attackEvent:FireServer() -- ส่งคำสั่งไปเซิร์ฟเวอร์เหมือนคลิกโจมตี
+                task.wait(0.8) -- ความเร็วในการคลิก (ทุก 0.8 วิ)
             end
         end)
     end
