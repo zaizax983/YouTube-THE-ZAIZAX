@@ -1,3 +1,9 @@
+while true do
+    -- จำลองการคลิก หรือสิ่งที่ต้องการให้ทำ
+    print("Click simulated!")
+    wait(0.8)
+end
+
 local player = game.Players.LocalPlayer
 
 -- สร้าง GUI และตั้งค่าให้อยู่บนสุด
